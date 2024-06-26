@@ -1,0 +1,11 @@
+from moviepy.editor import TextClip, CompositeVideoClip, VideoFileClip
+from moviepy.video.tools.subtitles import SubtitlesClip
+
+main_video = VideoFileClip("copy and paste video path here and use and add an extra '/' at each part")
+width, height = main_video.size
+bottom_height = height * 1 / 6
+subtitle_width = width * 0.85
+generator = lambda txt: TextClip(txt, font="Arial", fontsize=50, color="white", method='caption', size=(subtitle_width, None), align='center')
+sub_clip = SubtitlesClip("copy paste srt file path the same way as the videos", generator).set_position(('center', height - bottom_height))
+final_video = CompositeVideoClip([main_video, sub_clip])
+final_video.write_videofile("input the file path for the finished video", codec='libx264', fps=main_video.fps, temp_audiofile="temp-audio.m4a", remove_temp=True, audio_codec="aac")
